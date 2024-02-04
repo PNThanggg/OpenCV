@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory
 import java.io.ByteArrayOutputStream
 
 
-object Utils {
+object AppUtils {
     fun byteDataToBitmap(byteArray: ByteArray): Bitmap {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }

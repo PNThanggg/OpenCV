@@ -74,6 +74,34 @@ class OpenCvMethodCallHandler : MethodCallHandler {
                 )
             }
 
+            "threshold" -> {
+                val byteData: ByteArray? = call.argument("byteData")
+                val thresh: Double? = call.argument("thresh")
+
+                Log.d(TAG, "thresh $thresh")
+
+                val threshold: ByteArray = OpenCVCore.threshold(
+                    byteData,
+                    thresh ?: 0.0
+                )
+
+                result.success(
+                    threshold
+                )
+            }
+
+            "remove_background" -> {
+                val byteData: ByteArray? = call.argument("byteData")
+
+                val removeBackground: ByteArray = OpenCVCore.removeBackground(
+                    byteData ?: ByteArray(0),
+                )
+
+                result.success(
+                    removeBackground
+                )
+            }
+
             else -> result.notImplemented()
         }
     }

@@ -55,10 +55,31 @@ class OpenCV {
     required Uint8List byteData,
     required int kernelSize,
   }) async {
-    final Uint8List? result =
-        await _channel.invokeMethod('median_blur', {
+    final Uint8List? result = await _channel.invokeMethod('median_blur', {
       'byteData': byteData,
       'kernelSize': kernelSize,
+    });
+
+    return result;
+  }
+
+  static Future<Uint8List?> threshold({
+    required Uint8List byteData,
+    required double thresh,
+  }) async {
+    final Uint8List? result = await _channel.invokeMethod('threshold', {
+      'byteData': byteData,
+      "thresh": thresh,
+    });
+
+    return result;
+  }
+
+  static Future<Uint8List?> removeBackground({
+    required Uint8List byteData,
+  }) async {
+    final Uint8List? result = await _channel.invokeMethod('remove_background', {
+      'byteData': byteData,
     });
 
     return result;
