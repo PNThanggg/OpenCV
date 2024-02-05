@@ -12,6 +12,7 @@ import org.opencv.core.Rect
 import org.opencv.core.Scalar
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
+import org.opencv.imgproc.Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C
 import org.opencv.imgproc.Imgproc.ADAPTIVE_THRESH_MEAN_C
 import org.opencv.imgproc.Imgproc.THRESH_BINARY
 
@@ -52,7 +53,7 @@ object OpenCVCore {
             val src = Imgcodecs.imdecode(MatOfByte(byteData), Imgcodecs.IMREAD_GRAYSCALE)
 
             Imgproc.adaptiveThreshold(
-                src, dst, 255.0, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, blockSize, cValue
+                src, dst, 255.0, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, blockSize, cValue
             )
 
             val matOfByte = MatOfByte()
@@ -76,22 +77,9 @@ object OpenCVCore {
             val dst = Mat()
             val src = Imgcodecs.imdecode(MatOfByte(byteData), Imgcodecs.IMREAD_GRAYSCALE)
 
-//            Imgproc.cvtColor(src, dst, Imgproc.COLOR_BGR2GRAY)
-
             Imgproc.threshold(
                 src, dst, thresh, 255.0, THRESH_BINARY
             )
-
-//            Imgproc.medianBlur(src, dst, 15)
-//            Imgproc.adaptiveThreshold(
-//                dst,
-//                dst,
-//                255.0,
-//                ADAPTIVE_THRESH_MEAN_C,
-//                THRESH_BINARY,
-//                blockSize,
-//                cValue
-//            )
 
             val matOfByte = MatOfByte()
             Imgcodecs.imencode(JPG, dst, matOfByte)
@@ -105,7 +93,7 @@ object OpenCVCore {
     }
 
     fun removeBackground(byteData: ByteArray): ByteArray {
-        var bitmap: Bitmap = AppUtils.byteDataToBitmap(byteData)
+        var bitmap: Bitmap = AppUtils.byteArrayToBitmap(byteData)
 
         try {
             val dst = Mat()

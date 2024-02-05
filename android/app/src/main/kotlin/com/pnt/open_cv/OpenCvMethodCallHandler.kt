@@ -53,7 +53,8 @@ class OpenCvMethodCallHandler : MethodCallHandler {
                 )
 
                 result.success(
-                    adaptiveThreshold
+                    AppUtils.convertWhiteToTransparent(adaptiveThreshold)
+//                    adaptiveThreshold
                 )
             }
 

@@ -170,7 +170,7 @@ class _MyAppState extends State<MyApp> {
                 : Container(),
             loaded
                 ? Container(
-                    color: Colors.black,
+                    color: Colors.green,
                     padding: const EdgeInsets.all(10.0),
                     margin: const EdgeInsets.symmetric(horizontal: 8),
                     child: imageAdaptiveThreshold,
