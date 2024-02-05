@@ -14,14 +14,16 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  dynamic res;
   Image image = Image.asset('assets/temp.png');
-  Image imageNew = Image.asset('assets/temp.png');
+  Image imageCanny = Image.asset('assets/temp.png');
+  Image imageAdaptiveThreshold = Image.asset('assets/temp.png');
+  Image imageMedianBlur = Image.asset('assets/temp.png');
+  Image imageThreshold = Image.asset('assets/temp.png');
   File? file;
   bool preloaded = false;
   bool loaded = false;
@@ -76,20 +78,43 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> runFunction() async {
     try {
-      // res = await OpenCV.medianBlur(
-      //   byteData: await file!.readAsBytes(),
-      //   kernelSize: 15
-      // );
+      Uint8List? canny = await OpenCV.cannyEdgeDetection(
+        byteData: await file!.readAsBytes(),
+        threshold1: 50,
+        threshold2: 150,
+      );
 
-      res = await OpenCV.adaptiveThreshold(
+      Uint8List? adaptiveThreshold = await OpenCV.adaptiveThreshold(
         byteData: await file!.readAsBytes(),
         blockSize: 15,
         cValue: 5.0,
       );
 
+      Uint8List? medianBlur = await OpenCV.medianBlur(
+        byteData: await file!.readAsBytes(),
+        kernelSize: 15,
+      );
+
+      Uint8List? threshold = await OpenCV.threshold(
+        byteData: await file!.readAsBytes(),
+        thresh: 5.0,
+      );
+
       setState(() {
-        if (res != null) {
-          imageNew = Image.memory(res);
+        if (canny != null) {
+          imageCanny = Image.memory(canny);
+        }
+
+        if (adaptiveThreshold != null) {
+          imageAdaptiveThreshold = Image.memory(adaptiveThreshold);
+        }
+
+        if (medianBlur != null) {
+          imageMedianBlur = Image.memory(medianBlur);
+        }
+
+        if (threshold != null) {
+          imageThreshold = Image.memory(threshold);
         }
 
         loaded = true;
@@ -135,7 +160,38 @@ class _MyAppState extends State<MyApp> {
               ],
             ),
             const Text("After"),
-            loaded ? imageNew : Container()
+            loaded
+                ? Container(
+                    color: Colors.black,
+                    padding: const EdgeInsets.all(10.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    child: imageCanny,
+                  )
+                : Container(),
+            loaded
+                ? Container(
+                    color: Colors.black,
+                    padding: const EdgeInsets.all(10.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    child: imageAdaptiveThreshold,
+                  )
+                : Container(),
+            loaded
+                ? Container(
+                    color: Colors.black,
+                    padding: const EdgeInsets.all(10.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    child: imageMedianBlur,
+                  )
+                : Container(),
+            loaded
+                ? Container(
+                    color: Colors.black,
+                    padding: const EdgeInsets.all(10.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    child: imageThreshold,
+                  )
+                : Container(),
           ],
         ),
       ),
